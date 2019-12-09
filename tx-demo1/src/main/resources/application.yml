@@ -1,0 +1,41 @@
+server:
+  port: 20001
+
+spring:
+  application:
+    name: demo1-client
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+#  redis 的设置信息. 线上请用Redis Cluster
+  redis:
+   host: 127.0.0.1
+   port: 6379
+   password: 123456
+  transaction:
+     rollback-on-commit-failure: true
+
+
+feign:
+  hystrix:
+    enabled: false
+  demo2name: DEMO2-CLIENT
+  demo3name: DEMO3-CLIENT
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:30000/eureka/ # 可配置多个地址
+  healthcheck:
+    enabled: true
+  instance:
+    prefer-ip-address: true   #服务之间调用时，指定IP调用
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+#分布式事务配置
+tx-lcn:
+  client:
+    manager-address: 127.0.0.1:8070

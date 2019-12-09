@@ -1,0 +1,32 @@
+server:
+  port: 20003
+spring:
+  application:
+    name: demo3-client
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/demo3?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+feign:
+  hystrix:
+    enabled: false
+  demo1name: demo1-client
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:30000/eureka/ # 可配置多个地址
+  healthcheck:
+    enabled: true
+  instance:
+    prefer-ip-address: true   #服务之间调用时，指定IP调用
+    # 1.5.x-->2.0.x ipAddress-->ip-address
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+
+#分布式事务配置
+#tx-lcn:
+#  client:
+#    manager-address: 127.0.0.1:8070
